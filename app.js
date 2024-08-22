@@ -20,7 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         Points: entryData.Points || 0,
                         Lives: entryData.Lives || 0,
                         Weight: entryData.Weight || 0,
-                        Playtime: entryData.Playtime || 0
+                        Playtime: entryData.Playtime || 0,
+                        originalIndex: steamData.indexOf(entry)
                     };
                 });
             }).sort((a, b) => b.Points - a.Points);
@@ -55,10 +56,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displayData(data) {
         dataBody.innerHTML = '';
-        data.forEach((item, index) => {
+        data.forEach((item) => {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${index + 1}</td>
+                <td>${item.originalIndex + 1}</td>
                 <td>${sanitizeString(item.Name)}</td>
                 <td>${item.Points}</td>
                 <td>${item.steamid}</td>
