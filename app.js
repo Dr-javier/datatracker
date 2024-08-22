@@ -10,9 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // Create a Map to store the latest entry by steamid
             const steamMap = new Map();
 
-            // Iterate from the end to the beginning to prefer newer entries
-            for (let i = steamData.length - 1; i >= 0; i--) {
-                const entry = steamData[i];
+            // Iterate from the beginning to the end, allowing later entries to override earlier ones
+            steamData.forEach(entry => {
                 Object.keys(entry).forEach(steamid => {
                     const entryData = entry[steamid] || {};
                     steamMap.set(steamid, {
@@ -24,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         Playtime: entryData.Playtime || 0
                     });
                 });
-            }
+            });
 
             // Convert the map back to an array and sort by points
             const sortedData = Array.from(steamMap.values()).sort((a, b) => b.Points - a.Points);
