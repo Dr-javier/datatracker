@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Tracker Leaderboard</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Data Tracker Leaderboard</h1>
+    <input type="text" id="searchInput" placeholder="Search by placement, name, or Steam ID">
+    <table>
+        <thead>
+            <tr>
+                <th>Placement</th>
+                <th>Name</th>
+                <th>Points</th>
+                <th>Steam ID</th>
+            </tr>
+        </thead>
+        <tbody id="dataBody">
+            <!-- Data will be populated here -->
+        </tbody>
+    </table>
+    <script src="app.js"></script>
+</body>
+</html>
