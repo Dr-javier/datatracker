@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             const steamData = data.Steamid || [];
 
-            // Handle multiple steamids within each entry
-            const sortedData = steamData.flatMap(entry => {
+            // Sort the data by points and store the original index for placement
+            const sortedData = steamData.flatMap((entry, idx) => {
                 return Object.keys(entry).map(steamid => {
                     const entryData = entry[steamid] || {};
                     if (!entryData.Name) {
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         Lives: entryData.Lives || 0,
                         Weight: entryData.Weight || 0,
                         Playtime: entryData.Playtime || 0,
-                        originalIndex: steamData.findIndex(e => Object.keys(e)[0] === steamid) + 1 // +1 for 1-based index
+                        originalIndex: idx + 1  // This represents the sorted position
                     };
                 });
             }).sort((a, b) => b.Points - a.Points);
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     filteredData = sortedData.filter(item => item.steamid === steamidSearch);
                 } else if (searchTerm.startsWith('#')) {
                     const placementSearch = parseInt(searchTerm.split('#')[1].trim(), 10);
-                    filteredData = sortedData.filter(item => item.originalIndex === placementSearch);
+                    filteredData = sortedData.filter((item, index) => index + 1 === placementSearch);
                 } else {
                     filteredData = sortedData.filter(item =>
                         item.Name.toLowerCase().includes(searchTerm) ||
@@ -56,10 +56,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displayData(data) {
         dataBody.innerHTML = '';
-        data.forEach(item => {
+        data.forEach((item, index) => {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${item.originalIndex}</td>
+                <td>${index + 1}</td>  <!-- Corrected placement index -->
                 <td>${sanitizeString(item.Name)}</td>
                 <td>${item.Points}</td>
                 <td>${item.steamid}</td>
