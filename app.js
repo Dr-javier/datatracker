@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             const steamData = data.Steamid || [];
 
-            // Sort the data by points and store the original index for placement
-            const sortedData = steamData.flatMap((entry, idx) => {
+            // Sort the data by points and calculate placement
+            const sortedData = steamData.flatMap(entry => {
                 return Object.keys(entry).map(steamid => {
                     const entryData = entry[steamid] || {};
                     if (!entryData.Name) {
@@ -20,11 +20,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         Points: entryData.Points || 0,
                         Lives: entryData.Lives || 0,
                         Weight: entryData.Weight || 0,
-                        Playtime: entryData.Playtime || 0,
-                        originalIndex: idx + 1  // This represents the sorted position
+                        Playtime: entryData.Playtime || 0
                     };
                 });
             }).sort((a, b) => b.Points - a.Points);
+
+            // Add placement based on the sorted order
+            sortedData.forEach((item, index) => {
+                item.placement = index + 1;
+            });
 
             // Display data
             displayData(sortedData);
@@ -39,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     filteredData = sortedData.filter(item => item.steamid === steamidSearch);
                 } else if (searchTerm.startsWith('#')) {
                     const placementSearch = parseInt(searchTerm.split('#')[1].trim(), 10);
-                    filteredData = sortedData.filter((item, index) => index + 1 === placementSearch);
+                    filteredData = sortedData.filter(item => item.placement === placementSearch);
                 } else {
                     filteredData = sortedData.filter(item =>
                         item.Name.toLowerCase().includes(searchTerm) ||
@@ -56,10 +60,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displayData(data) {
         dataBody.innerHTML = '';
-        data.forEach((item, index) => {
+        data.forEach((item) => {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${index + 1}</td>  <!-- Corrected placement index -->
+                <td>${item.placement}</td>  <!-- Corrected placement index -->
                 <td>${sanitizeString(item.Name)}</td>
                 <td>${item.Points}</td>
                 <td>${item.steamid}</td>
