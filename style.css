@@ -1,14 +1,14 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     margin: 0;
     padding: 0;
-    background-color: #121212;
-    color: #e0e0e0;
+    background-color: #0d1117;
+    color: #c9d1d9;
 }
 
 header {
-    background-color: #1f1f1f;
-    color: #fff;
+    background-color: #161b22;
+    color: #c9d1d9;
     padding: 1rem 0;
     text-align: center;
 }
@@ -21,17 +21,23 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 1rem;
+    background-color: #161b22;
 }
 
 th, td {
-    border: 1px solid #444;
+    border: 1px solid #30363d;
     padding: 8px;
     text-align: left;
 }
 
 th {
-    background-color: #333;
-    color: white;
+    background-color: #21262d;
+    color: #c9d1d9;
+}
+
+td {
+    background-color: #0d1117;
+    color: #c9d1d9;
 }
 
 input[type="text"] {
@@ -39,7 +45,22 @@ input[type="text"] {
     padding: 12px;
     margin-top: 1rem;
     box-sizing: border-box;
-    background-color: #1f1f1f;
-    color: #e0e0e0;
-    border: 1px solid #444;
+    background-color: #161b22;
+    color: #c9d1d9;
+    border: 1px solid #30363d;
+}
+
+input[type="text"]::placeholder {
+    color: #8b949e;
+}
+
+h1 {
+    color: #c9d1d9;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem 0;
+    background-color: #161b22;
+    color: #8b949e;
 }
