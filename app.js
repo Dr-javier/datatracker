@@ -6,8 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(data => {
             const steamData = data.Steamid;
-            const sortedData = Object.keys(steamData).map(steamid => {
-                return { steamid, ...steamData[steamid] };
+            const sortedData = steamData.map(entry => {
+                const steamid = Object.keys(entry)[0];
+                return { steamid, ...entry[steamid] };
             }).sort((a, b) => b.Points - a.Points);
 
             // Display data
