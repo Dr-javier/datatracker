@@ -2,11 +2,12 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #121212;
+    color: #e0e0e0;
 }
 
 header {
-    background-color: #333;
+    background-color: #1f1f1f;
     color: #fff;
     padding: 1rem 0;
     text-align: center;
@@ -23,7 +24,7 @@ table {
 }
 
 th, td {
-    border: 1px solid #ddd;
+    border: 1px solid #444;
     padding: 8px;
     text-align: left;
 }
@@ -38,4 +39,7 @@ input[type="text"] {
     padding: 12px;
     margin-top: 1rem;
     box-sizing: border-box;
+    background-color: #1f1f1f;
+    color: #e0e0e0;
+    border: 1px solid #444;
 }

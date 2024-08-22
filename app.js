@@ -28,16 +28,26 @@ document.addEventListener('DOMContentLoaded', () => {
             // Display data
             displayData(sortedData);
 
-            // Add search functionality
+            // Enhanced search functionality
             searchInput.addEventListener('input', () => {
                 const searchTerm = searchInput.value.toLowerCase();
-                const filteredData = sortedData.filter((item, index) => 
-                    index.toString().includes(searchTerm) ||
-                    item.Name.toLowerCase().includes(searchTerm) ||
-                    item.steamid.includes(searchTerm) ||
-                    levenshteinDistance(item.Name.toLowerCase(), searchTerm) <= 2 ||
-                    levenshteinDistance(item.steamid, searchTerm) <= 2
-                );
+                let filteredData;
+
+                if (searchTerm.startsWith('steamid:')) {
+                    const steamidSearch = searchTerm.split('steamid:')[1].trim();
+                    filteredData = sortedData.filter(item => item.steamid === steamidSearch);
+                } else if (searchTerm.startsWith('#')) {
+                    const placementSearch = parseInt(searchTerm.split('#')[1].trim(), 10);
+                    filteredData = sortedData.filter((_, index) => index + 1 === placementSearch);
+                } else {
+                    filteredData = sortedData.filter((item, index) =>
+                        item.Name.toLowerCase().includes(searchTerm) ||
+                        item.steamid.includes(searchTerm) ||
+                        levenshteinDistance(item.Name.toLowerCase(), searchTerm) <= 2 ||
+                        levenshteinDistance(item.steamid, searchTerm) <= 2
+                    );
+                }
+
                 displayData(filteredData);
             });
         })
