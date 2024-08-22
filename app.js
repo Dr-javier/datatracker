@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         Lives: entryData.Lives || 0,
                         Weight: entryData.Weight || 0,
                         Playtime: entryData.Playtime || 0,
-                        originalIndex: steamData.indexOf(entry)
+                        originalIndex: steamData.findIndex(e => Object.keys(e)[0] === steamid) + 1 // +1 for 1-based index
                     };
                 });
             }).sort((a, b) => b.Points - a.Points);
@@ -39,9 +39,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     filteredData = sortedData.filter(item => item.steamid === steamidSearch);
                 } else if (searchTerm.startsWith('#')) {
                     const placementSearch = parseInt(searchTerm.split('#')[1].trim(), 10);
-                    filteredData = sortedData.filter((_, index) => index + 1 === placementSearch);
+                    filteredData = sortedData.filter(item => item.originalIndex === placementSearch);
                 } else {
-                    filteredData = sortedData.filter((item, index) =>
+                    filteredData = sortedData.filter(item =>
                         item.Name.toLowerCase().includes(searchTerm) ||
                         item.steamid.includes(searchTerm) ||
                         levenshteinDistance(item.Name.toLowerCase(), searchTerm) <= 2 ||
@@ -56,10 +56,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function displayData(data) {
         dataBody.innerHTML = '';
-        data.forEach((item) => {
+        data.forEach(item => {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${item.originalIndex + 1}</td>
+                <td>${item.originalIndex}</td>
                 <td>${sanitizeString(item.Name)}</td>
                 <td>${item.Points}</td>
                 <td>${item.steamid}</td>
