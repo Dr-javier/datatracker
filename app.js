@@ -5,10 +5,24 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch('data.json')
         .then(response => response.json())
         .then(data => {
-            const steamData = data.Steamid;
-            const sortedData = steamData.map(entry => {
-                const steamid = Object.keys(entry)[0];
-                return { steamid, ...entry[steamid] };
+            const steamData = data.Steamid || [];
+
+            // Handle multiple steamids within each entry
+            const sortedData = steamData.flatMap(entry => {
+                return Object.keys(entry).map(steamid => {
+                    const entryData = entry[steamid] || {};
+                    if (!entryData.Name) {
+                        console.warn(`Missing Name for steamid: ${steamid}`);
+                    }
+                    return {
+                        steamid: steamid || 'Unknown',
+                        Name: entryData.Name || 'Unknown',
+                        Points: entryData.Points || 0,
+                        Lives: entryData.Lives || 0,
+                        Weight: entryData.Weight || 0,
+                        Playtime: entryData.Playtime || 0
+                    };
+                });
             }).sort((a, b) => b.Points - a.Points);
 
             // Display data
@@ -44,6 +58,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function sanitizeString(str) {
+        if (typeof str !== 'string') {
+            return ''; // Return an empty string if str is not a valid string
+        }
         return str.replace(/[^\x00-\x7F]/g, ''); // Remove non-ASCII characters
     }
 
