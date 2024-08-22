@@ -7,23 +7,27 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             const steamData = data.Steamid || [];
 
-            // Sort the data by points and calculate placement
-            const sortedData = steamData.flatMap(entry => {
-                return Object.keys(entry).map(steamid => {
+            // Create a Map to store the latest entry by steamid
+            const steamMap = new Map();
+
+            // Iterate from the end to the beginning to prefer newer entries
+            for (let i = steamData.length - 1; i >= 0; i--) {
+                const entry = steamData[i];
+                Object.keys(entry).forEach(steamid => {
                     const entryData = entry[steamid] || {};
-                    if (!entryData.Name) {
-                        console.warn(`Missing Name for steamid: ${steamid}`);
-                    }
-                    return {
+                    steamMap.set(steamid, {
                         steamid: steamid || 'Unknown',
                         Name: entryData.Name || 'Unknown',
                         Points: entryData.Points || 0,
                         Lives: entryData.Lives || 0,
                         Weight: entryData.Weight || 0,
                         Playtime: entryData.Playtime || 0
-                    };
+                    });
                 });
-            }).sort((a, b) => b.Points - a.Points);
+            }
+
+            // Convert the map back to an array and sort by points
+            const sortedData = Array.from(steamMap.values()).sort((a, b) => b.Points - a.Points);
 
             // Add placement based on the sorted order
             sortedData.forEach((item, index) => {
@@ -63,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
         data.forEach((item) => {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${item.placement}</td>  <!-- Corrected placement index -->
+                <td>${item.placement}</td>
                 <td>${sanitizeString(item.Name)}</td>
                 <td>${item.Points}</td>
                 <td>${item.steamid}</td>
